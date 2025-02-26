@@ -2,15 +2,18 @@ package bookstore
 
 // Book represents information about a book.
 type Book struct {
-	Title           string
-	Author          string
-	Copies          int
-	ID              int
-	PriceCents      int
-	DiscountPercent int
+	Title  string
+	Author string
+	Copies int
+	ID     int
 }
 
-func (b Book) NetPriceCents() int {
-	saving := b.PriceCents * b.DiscountPercent / 100
-	return b.PriceCents - saving
+type Catalog map[int]Book
+
+func (c Catalog) GetAllBooks() []Book {
+	result := []Book{}
+	for _, b := range c {
+		result = append(result, b)
+	}
+	return result
 }
