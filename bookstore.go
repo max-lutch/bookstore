@@ -1,19 +1,26 @@
 package bookstore
 
+import "fmt"
+
 // Book represents information about a book.
 type Book struct {
-	Title  string
-	Author string
-	Copies int
-	ID     int
+	Title           string
+	Author          string
+	Copies          int
+	ID              int
+	PriceCents      int
+	DiscountPercent int
+	category        string
 }
 
-type Catalog map[int]Book
-
-func (c Catalog) GetAllBooks() []Book {
-	result := []Book{}
-	for _, b := range c {
-		result = append(result, b)
+func (b *Book) SetCategory(category string) error {
+	if category != "Autobiography" {
+		return fmt.Errorf("unknown category %q", category)
 	}
-	return result
+	b.category = category
+	return nil
+}
+
+func (b Book) Category() string {
+	return b.category
 }
