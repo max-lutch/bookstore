@@ -24,3 +24,11 @@ func (b *Book) SetCategory(category string) error {
 func (b Book) Category() string {
 	return b.category
 }
+
+func (b *Book) SetPriceCents(price int) error {
+	if price < 0 {
+		return fmt.Errorf("negative price %d", price)
+	}
+	b.PriceCents = price
+	return nil
+}
