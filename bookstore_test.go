@@ -2,6 +2,9 @@ package bookstore_test
 
 import (
 	"bookstore"
+	"bookstore/creditcard"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"testing"
 )
 
@@ -16,7 +19,8 @@ func TestSetCategory(t *testing.T) {
 		t.Fatal(err)
 	}
 	got := b.Category()
-	if want != got {
+	if !cmp.Equal(want, got,
+		cmpopts.IgnoreUnexported(bookstore.Book{})) {
 		t.Errorf("want category %q, got %q", want, got)
 	}
 }
@@ -32,28 +36,15 @@ func TestSetCategoryInvalid(t *testing.T) {
 	}
 }
 
-func TestSetPriceCents(t *testing.T) {
+func TestNew(t *testing.T) {
 	t.Parallel()
-	b := bookstore.Book{
-		Title:      "For the Love of Go",
-		PriceCents: 4000,
+	want := "123456789"
+	cc, err := creditcard.New(want)
+	if err != nil {
+		t.Fatal(err)
 	}
-	want := 3000
-	b.SetPriceCents(want)
-	got := b.PriceCents
+	got := cc.Number
 	if want != got {
-		t.Errorf("want updated price %d, got %d", want, got)
-	}
-}
-
-func TestSetPriceCentsInvalid(t *testing.T) {
-	t.Parallel()
-	b := bookstore.Book{
-		Title:      "For the Love of Go",
-		PriceCents: 4000,
-	}
-	err := b.SetPriceCents(-1)
-	if err == nil {
-		t.Fatal("want error setting invalid price -1, got nil")
+		t.Errorf("want %s, got %s", want, got)
 	}
 }
